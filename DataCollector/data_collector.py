@@ -16,7 +16,7 @@ class DataCollector:
     URL: str = 'https://opendata.concordia.ca/API/v1/library/occupancy/'
 
     def __init__(self):
-        self.config = Config(file_path='../.config')
+        self.config = Config()
         self.logger = get_logger()
 
     def run(self):
