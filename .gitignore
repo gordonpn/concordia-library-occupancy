@@ -1,0 +1,14 @@
+# Created by .ignore support plugin (hsz.mobi)
+.config
+.idea/concordia-library-occupancy.iml
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/sonarlint/
+.idea/vagrant.xml
+.idea/vcs.xml
+Configuration/__pycache__/
+Pipfile
+Pipfile.lock
+data.json
+venv/
