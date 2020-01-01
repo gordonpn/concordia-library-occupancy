@@ -12,7 +12,7 @@ from Configuration.logger import get_logger
 
 
 class DataCollector:
-    PATH: str = '../data.json'
+    PATH: str = 'data.json'
     URL: str = 'https://opendata.concordia.ca/API/v1/library/occupancy/'
 
     def __init__(self):
@@ -27,7 +27,7 @@ class DataCollector:
 
     def random_delay(self) -> int:
         random_time: int = random.randint(0, 30) * 60
-        self.logger.debug(f"Random time: {random_time}")
+        self.logger.debug(f"Wait time unless next: {random_time} seconds")
         return random_time
 
     def collect(self) -> Dict[str, int]:
