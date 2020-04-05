@@ -12,3 +12,4 @@ Pipfile
 Pipfile.lock
 data.json
 venv/
+*.env
