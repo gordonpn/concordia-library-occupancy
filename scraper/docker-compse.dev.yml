@@ -5,8 +5,8 @@ services:
     container_name: mongodb
     env_file:
       - .env
-    ports:
-      - 27017:27017
+#    ports:
+#      - 27017:27017
     volumes:
       - ./.docker/data/db:/data/db
       - ./.docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d

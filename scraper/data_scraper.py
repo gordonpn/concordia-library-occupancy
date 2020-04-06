@@ -8,6 +8,7 @@ import time
 from logging.config import fileConfig
 from pathlib import Path
 from typing import Dict
+from pymongo import MongoClient
 
 from dotenv import load_dotenv
 
@@ -44,8 +45,10 @@ class DataCollector:
         return data
 
     def save(self, data):
-        # TODO modify to save into a database
         date_time: str = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M")
+        connection = MongoClient(f"mongodb://{os.getenv('MONGO_INITDB_USERNAME')}:{os.getenv('MONGO_INITDB_PASSWORD')}@localhost:27017/")
+        db = connection[os.getenv('MONGO_INITDB_DATABASE')]
+        # TODO insert documents
         if os.path.exists(DataCollector.PATH):
             try:
                 logger.info("Opening existing json")
