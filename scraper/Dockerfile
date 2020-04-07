@@ -3,7 +3,7 @@ FROM python:3.7-alpine
 COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
 
-RUN useradd --create-home appuser
+RUN adduser -S -D appuser
 WORKDIR /home/appuser
 USER appuser
 

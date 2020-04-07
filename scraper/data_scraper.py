@@ -23,8 +23,8 @@ class DataCollector:
         data = self.collect()
         self.save(data)
 
-    def collect(self) -> Dict[str, Dict[datetime, int]]:
-        data: Dict[str, Dict[datetime, int]] = {}
+    def collect(self):
+        data = {}
 
         request_json: Dict[str, Dict[str, str]] = requests.get(
             DataCollector.URL,
@@ -48,7 +48,7 @@ class DataCollector:
         return data
 
     def save(self, data):
-        connection = MongoClient(f"mongodb://{os.getenv('MONGO_INITDB_USERNAME')}:{os.getenv('MONGO_INITDB_PASSWORD')}@localhost:27017/")
+        connection = MongoClient(f"mongodb://{os.getenv('MONGO_INITDB_ROOT_USERNAME')}:{os.getenv('MONGO_INITDB_ROOT_PASSWORD')}@mongo-db:27017/")
         db = connection[os.getenv('MONGO_INITDB_DATABASE')]
 
         for key in data:
