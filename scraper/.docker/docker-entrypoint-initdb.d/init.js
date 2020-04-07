@@ -1,12 +1,12 @@
-db.webster.insert({
+db.Webster.insert({
   time: new Date(),
   occupancy: 999
 });
-db.vanier.insert({
+db.Vanier.insert({
   time: new Date(),
   occupancy: 666
 });
-db.greynuns.insert({
+db.GreyNuns.insert({
   time: new Date(),
   occupancy: 333
 });

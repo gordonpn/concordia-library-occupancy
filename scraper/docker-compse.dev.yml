@@ -1,16 +1,20 @@
 version: '3.7'
 services:
+
   mongo-db:
     image: mongo:latest
-    container_name: mongodb
+    container_name: mongo-db
     env_file:
       - .env
+    expose:
+      - 27017
 #    ports:
 #      - 27017:27017
     volumes:
-      - ./.docker/data/db:/data/db
+      - dev-mongodb-data:/data/db
       - ./.docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     restart: unless-stopped
+
   scraper:
     build:
       context: .
@@ -20,12 +24,6 @@ services:
     depends_on:
       - mongo-db
     restart: unless-stopped
-#  mongo-express:
-#    image: mongo-express
-#    restart: unless-stopped
-#    depends_on:
-#      - mongo-db
-#    ports:
-#      - 8081:8081
-#    env_file:
-#      - .env
+
+volumes:
+  dev-mongodb-data:
