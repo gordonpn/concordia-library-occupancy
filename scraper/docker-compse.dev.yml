@@ -8,8 +8,6 @@ services:
       - .env
     expose:
       - 27017
-#    ports:
-#      - 27017:27017
     volumes:
       - dev-mongodb-data:/data/db
       - ./.docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
@@ -27,3 +25,5 @@ services:
 
 volumes:
   dev-mongodb-data:
+    external:
+      name: dev-mongodb-data

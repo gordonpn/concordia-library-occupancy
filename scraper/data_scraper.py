@@ -1,6 +1,8 @@
 import datetime
 import logging
 import os
+import random
+import time
 from logging.config import fileConfig
 from pathlib import Path
 from typing import Dict
@@ -20,8 +22,15 @@ class DataCollector:
     URL: str = 'https://opendata.concordia.ca/API/v1/library/occupancy/'
 
     def run(self):
+        if not os.getenv('DEV'):
+            time.sleep(self.random_delay())
         data = self.collect()
         self.save(data)
+
+    def random_delay(self) -> int:
+        random_time: int = random.randint(0, 30) * 60
+        logger.debug(f"Wait time unless next: {random_time} seconds")
+        return random_time
 
     def collect(self):
         data = {}
@@ -45,16 +54,21 @@ class DataCollector:
             "time": recorded_time,
             "occupancy": max(0, int(float(request_json.get('GreyNuns').get('Occupancy'))))
         }
+
+        logger.debug("Finished collecting data")
         return data
 
     def save(self, data):
-        connection = MongoClient(f"mongodb://{os.getenv('MONGO_INITDB_ROOT_USERNAME')}:{os.getenv('MONGO_INITDB_ROOT_PASSWORD')}@mongo-db:27017/")
+        logger.debug("Making connection to mongodb")
+        uri: str = f"mongodb://{os.getenv('MONGO_NON_ROOT_USERNAME')}:{os.getenv('MONGO_NON_ROOT_PASSWORD')}@mongo-db:27017/"
+        connection = MongoClient(uri)
         db = connection[os.getenv('MONGO_INITDB_DATABASE')]
 
         for key in data:
             collection = db.key
             collection.insert_one(data.get(key))
             logger.debug(f"Inserted data for {key} with {data.get(key)}")
+            logger.debug(f"Into {db}")
 
 
 if __name__ == '__main__':
