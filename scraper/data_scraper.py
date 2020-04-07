@@ -60,12 +60,16 @@ class DataCollector:
 
     def save(self, data):
         logger.debug("Making connection to mongodb")
-        uri: str = f"mongodb://{os.getenv('MONGO_NON_ROOT_USERNAME')}:{os.getenv('MONGO_NON_ROOT_PASSWORD')}@mongo-db:27017/"
+        dbname: str = os.getenv('MONGO_INITDB_DATABASE')
+        username: str = os.getenv('MONGO_NON_ROOT_USERNAME')
+        password: str = os.getenv('MONGO_NON_ROOT_PASSWORD')
+        uri: str = f"mongodb://{username}:{password}@mongo-db:27017/{dbname}"
         connection = MongoClient(uri)
-        db = connection[os.getenv('MONGO_INITDB_DATABASE')]
+        db = connection[dbname]
 
         for key in data:
-            collection = db.key
+            collection = db[key]
+            logger.debug(f"Inserting data into collection {collection}")
             collection.insert_one(data.get(key))
             logger.debug(f"Inserted data for {key} with {data.get(key)}")
             logger.debug(f"Into {db}")

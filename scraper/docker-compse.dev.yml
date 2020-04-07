@@ -9,7 +9,7 @@ services:
     expose:
       - 27017
     volumes:
-      - dev-mongodb-data:/data/db
+      - dev-mongodb-library:/data/db
       - ./.docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
     restart: unless-stopped
 
@@ -24,6 +24,6 @@ services:
     restart: unless-stopped
 
 volumes:
-  dev-mongodb-data:
+  dev-mongodb-library:
     external:
-      name: dev-mongodb-data
+      name: dev-mongodb-library
