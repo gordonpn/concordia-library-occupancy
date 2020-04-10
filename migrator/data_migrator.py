@@ -2,10 +2,9 @@ import datetime
 import json
 import logging
 import os
-import sys
 from logging.config import fileConfig
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Optional
 
 import pytz
 from dotenv import load_dotenv
@@ -23,12 +22,12 @@ class DataMigrator:
         self.json_file = "data.json"
 
     def run(self):
-        data = self.open_file
-        self.migrate(data)
+        raw_data = self.open_file()
+        self.migrate(raw_data)
 
     def open_file(self) -> Dict[str, Dict[str, int]]:
         if not os.path.exists(self.json_file):
-            sys.exit(1)
+            raise FileNotFoundError
 
         logger.debug(f"Opening existing {self.json_file}")
         with open(self.json_file, "r") as read_file:
@@ -37,12 +36,12 @@ class DataMigrator:
         logger.debug("Read file successfully")
         return data_from_json
 
-    def migrate(self, data):
+    def migrate(self, data: Dict[str, Dict[str, int]]):
         logger.debug("Starting data migration")
         logger.debug("Making connection to mongodb")
-        dbname: str = os.getenv('MONGO_INITDB_DATABASE')
-        username: str = os.getenv('MONGO_NON_ROOT_USERNAME')
-        password: str = os.getenv('MONGO_NON_ROOT_PASSWORD')
+        dbname: Optional[str] = os.getenv('MONGO_INITDB_DATABASE')
+        username: Optional[str] = os.getenv('MONGO_NON_ROOT_USERNAME')
+        password: Optional[str] = os.getenv('MONGO_NON_ROOT_PASSWORD')
         uri: str = f"mongodb://{username}:{password}@mongo-db:27017/{dbname}"
         connection = MongoClient(uri)
         db = connection[dbname]
@@ -52,11 +51,11 @@ class DataMigrator:
             date_time = key.split('_')
             date = date_time[0].split('-')
             time = date_time[1].split(':')
-            year = date[0]
-            month = date[1]
-            day = date[2]
-            hour = time[0]
-            minute = time[1]
+            year = int(date[0])
+            month = int(date[1])
+            day = int(date[2])
+            hour = int(time[0])
+            minute = int(time[1])
             timezone = pytz.timezone('America/Montreal')
             aware_datetime = timezone.localize(
                 datetime.datetime(year=year, month=month, day=day, hour=hour, minute=minute)
@@ -74,5 +73,5 @@ class DataMigrator:
 
 
 if __name__ == "__main__":
-    data_migration = DataMigrator()
-    data_migration.run()
+    data_migrator = DataMigrator()
+    data_migrator.run()
