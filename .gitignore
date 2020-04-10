@@ -13,3 +13,4 @@ Pipfile.lock
 data.json
 venv/
 *.env
+.mypy_cache/
