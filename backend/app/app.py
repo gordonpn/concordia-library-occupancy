@@ -2,13 +2,13 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from flask import Flask, jsonify, request
-from flask_restful import Resource, Api
+from flask import Flask
+from flask_restful import Api
 
 from .controller.base import Base
 from .controller.occupancy_library import OccupancyLibrary
-from .controller.occupancy_weekday import OccupancyWeekday
 from .controller.occupancy_period import OccupancyPeriod
+from .controller.occupancy_weekday import OccupancyWeekday
 from .database import database
 
 env_path = Path('.') / '.env'
