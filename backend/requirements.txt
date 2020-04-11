@@ -1,2 +1,4 @@
 flask
 flask-restful
+python-dotenv==0.12.0
+Flask-PyMongo
