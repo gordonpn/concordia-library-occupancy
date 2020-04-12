@@ -4,7 +4,7 @@ type: docker
 name: deploy staging
 
 steps:
-  - name: deploy staging
+  - name: deploy
     image: docker/compose:1.25.5
     environment:
       MONGO_INITDB_ROOT_USERNAME:
