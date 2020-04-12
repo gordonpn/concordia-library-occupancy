@@ -27,7 +27,7 @@ steps:
       - name: dockersock
         path: /var/run/docker.sock
     commands:
-      - docker-compose up -f /drone/src/docker-compose.dev.yml --build
+      - docker-compose -f /drone/src/docker-compose.dev.yml up --detach --build
 
 volumes:
   - name: dockersock
