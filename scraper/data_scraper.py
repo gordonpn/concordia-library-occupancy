@@ -18,7 +18,7 @@ class DataCollector:
 
     def run(self):
         logger.debug("Setting schedule")
-        schedule.every(10).to(20).minutes.do(self.job())
+        schedule.every(10).to(20).minutes.do(self.job)
 
         while True:
             schedule.run_pending()
