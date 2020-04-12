@@ -53,7 +53,7 @@ services:
       - "traefik.http.routers.library-api.entrypoints=web,websecure"
       - "traefik.http.routers.library-api.middlewares=redirect_scheme,secured_headers"
       - "traefik.http.routers.library-api.rule=Host(`library-dev.${DOMAIN}`) && PathPrefix(`/api`)"
-      #      - "traefik.http.routers.library-api.service="
+      - "traefik.http.routers.library-api.service=library-api@docker"
       - "traefik.http.routers.library-api.tls.certresolver=leresolver"
       - "traefik.http.routers.library-api.tls=true"
       - "traefik.http.services.library-api.loadbalancer.server.port=5000"

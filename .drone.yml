@@ -14,7 +14,7 @@ steps:
       OPEN_DATA_USER:
         from_secret: OPEN_DATA_USER
       OPEN_DATA_KEY:
-        from_secret: OLD_DATA_KEY
+        from_secret: OPEN_DATA_KEY
       MONGO_INITDB_DATABASE:
         from_secret: MONGO_INITDB_DATABASE
       MONGO_NON_ROOT_ROLE:

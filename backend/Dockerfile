@@ -9,7 +9,7 @@ USER appuser
 
 COPY logging.ini .
 COPY main.py .
-COPY app/ /app/
+COPY app/ ./app/
 
 EXPOSE 5000
 
