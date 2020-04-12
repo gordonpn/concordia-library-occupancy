@@ -1,13 +1,8 @@
 import logging
 import os
 from logging.config import fileConfig
-from pathlib import Path
 
-from dotenv import load_dotenv
 from flask_pymongo import PyMongo
-
-env_path = Path('.') / '.env'
-load_dotenv(dotenv_path=env_path, override=True)
 
 logging.config.fileConfig('logging.ini')
 logger = logging.getLogger(__name__)

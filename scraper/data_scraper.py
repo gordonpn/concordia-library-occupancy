@@ -3,16 +3,11 @@ import logging
 import os
 import time
 from logging.config import fileConfig
-from pathlib import Path
 from typing import Dict
 
 import requests
 import schedule
-from dotenv import load_dotenv
 from pymongo import MongoClient
-
-env_path = Path('.') / '.env'
-load_dotenv(dotenv_path=env_path, override=True)
 
 logging.config.fileConfig('logging.ini')
 logger = logging.getLogger(__name__)

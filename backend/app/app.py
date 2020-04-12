@@ -1,7 +1,5 @@
 import os
-from pathlib import Path
 
-from dotenv import load_dotenv
 from flask import Flask
 from flask_restful import Api
 
@@ -10,9 +8,6 @@ from .controller.occupancy_library import OccupancyLibrary
 from .controller.occupancy_period import OccupancyPeriod
 from .controller.occupancy_weekday import OccupancyWeekday
 from .database import database
-
-env_path = Path('.') / '.env'
-load_dotenv(dotenv_path=env_path, override=True)
 
 debug_mode: bool = str(os.getenv('DEV')).lower().__eq__('true')
 
