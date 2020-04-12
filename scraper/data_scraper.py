@@ -22,6 +22,7 @@ class DataCollector:
     URL: str = 'https://opendata.concordia.ca/API/v1/library/occupancy/'
 
     def run(self):
+        logger.debug("Setting schedule")
         schedule.every(10).to(20).minutes.do(self.job())
 
         while True:
@@ -29,7 +30,9 @@ class DataCollector:
             time.sleep(1)
 
     def job(self):
+        logger.debug("Starting up job")
         self.save(self.collect())
+        logger.debug("Job completed")
 
     def collect(self):
         data = {}

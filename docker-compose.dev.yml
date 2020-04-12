@@ -4,8 +4,13 @@ services:
   mongo-db:
     image: mongo:latest
     container_name: mongo-db
-    env_file:
-      - .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE
+      - MONGO_NON_ROOT_ROLE
+      - MONGO_NON_ROOT_USERNAME
+      - MONGO_NON_ROOT_PASSWORD
     expose:
       - 27017
     volumes:
@@ -17,8 +22,15 @@ services:
     build:
       context: ./scraper
       dockerfile: Dockerfile
-    env_file:
-      - .env
+    environment:
+      - OPEN_DATA_USER
+      - OPEN_DATA_KEY
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE
+      - MONGO_NON_ROOT_ROLE
+      - MONGO_NON_ROOT_USERNAME
+      - MONGO_NON_ROOT_PASSWORD
     depends_on:
       - mongo-db
     restart: unless-stopped
@@ -27,13 +39,29 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    env_file:
-      - .env
+    environment:
+      - MONGO_INITDB_DATABASE
+      - MONGO_NON_ROOT_ROLE
+      - MONGO_NON_ROOT_USERNAME
+      - MONGO_NON_ROOT_PASSWORD
     depends_on:
       - mongo-db
     restart: unless-stopped
+    labels:
+      - "traefik.docker.network=web"
+      - "traefik.enable=true"
+      - "traefik.http.routers.library-api.entrypoints=web,websecure"
+      - "traefik.http.routers.library-api.middlewares=redirect_scheme,secured_headers"
+      - "traefik.http.routers.library-api.rule=Host(`library-dev.${DOMAIN}`) && PathPrefix(`/api`)"
+      #      - "traefik.http.routers.library-api.service="
+      - "traefik.http.routers.library-api.tls.certresolver=leresolver"
+      - "traefik.http.routers.library-api.tls=true"
+      - "traefik.http.services.library-api.loadbalancer.server.port=5000"
 
 volumes:
   dev-mongodb-library:
     external:
       name: dev-mongodb-library
+networks:
+  web:
+    external: true
