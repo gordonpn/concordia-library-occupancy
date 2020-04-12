@@ -22,4 +22,4 @@ api.add_resource(OccupancyLibrary, f"{base_url}/occupancy/<string:library_name>"
 api.add_resource(OccupancyWeekday, f"{base_url}/occupancy/<string:library_name>/<string:weekday>")
 api.add_resource(OccupancyPeriod, f"{base_url}/occupancy/<string:library_name>/last/<int:number>/<string:period>")
 
-app.run(debug=debug_mode)
+app.run(host='0.0.0.0', debug=debug_mode)
