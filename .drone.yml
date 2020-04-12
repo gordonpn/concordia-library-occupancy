@@ -5,7 +5,7 @@ name: deploy staging
 
 steps:
   - name: deploy staging
-    image: docker:dind
+    image: docker/compose:1.25.5
     environment:
       MONGO_INITDB_ROOT_USERNAME:
         from_secret: MONGO_INITDB_ROOT_USERNAME
@@ -27,7 +27,7 @@ steps:
       - name: dockersock
         path: /var/run/docker.sock
     commands:
-      - docker-compose -f docker-compose.dev.yml up --build
+      - up -f /drone/src/docker-compose.dev.yml --build
 
 volumes:
   - name: dockersock
