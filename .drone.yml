@@ -7,6 +7,8 @@ steps:
   - name: deploy
     image: docker/compose:1.25.5
     environment:
+      DOMAIN:
+        from_secret: DOMAIN
       MONGO_INITDB_ROOT_USERNAME:
         from_secret: MONGO_INITDB_ROOT_USERNAME
       MONGO_INITDB_ROOT_PASSWORD:
