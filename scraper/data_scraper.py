@@ -1,13 +1,13 @@
 import datetime
 import logging
 import os
-import random
 import time
 from logging.config import fileConfig
 from pathlib import Path
 from typing import Dict
 
 import requests
+import schedule
 from dotenv import load_dotenv
 from pymongo import MongoClient
 
@@ -22,15 +22,14 @@ class DataCollector:
     URL: str = 'https://opendata.concordia.ca/API/v1/library/occupancy/'
 
     def run(self):
-        if not os.getenv('DEV'):
-            time.sleep(self.random_delay())
-        data = self.collect()
-        self.save(data)
+        schedule.every(10).to(20).minutes.do(self.job())
 
-    def random_delay(self) -> int:
-        random_time: int = random.randint(0, 30) * 60
-        logger.debug(f"Wait time unless next: {random_time} seconds")
-        return random_time
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
+
+    def job(self):
+        self.save(self.collect())
 
     def collect(self):
         data = {}
