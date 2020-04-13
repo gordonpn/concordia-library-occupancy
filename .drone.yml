@@ -30,6 +30,21 @@ steps:
         path: /var/run/docker.sock
     commands:
       - docker-compose -f /drone/src/docker-compose.dev.yml up --detach --build
+  - name: slack
+    image: plugins/slack
+    settings:
+      channel: drone-ci
+      template: >
+        {{build.event}} on {{build.branch}}
+        {{#success build.status}}
+          build {{build.number}} succeeded!
+        {{else}}
+          build {{build.number}} failed!
+        {{/success}}
+      webhook:
+        from_secret: SLACK_WEBHOOK_URL
+    when:
+      status: [ success, failure ]
 
 volumes:
   - name: dockersock

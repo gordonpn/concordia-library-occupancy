@@ -1,4 +1,3 @@
-flask
-flask-restful
-python-dotenv==0.12.0
-Flask-PyMongo
+flask~=1.1
+flask-restful~=0.3.8
+flask-pymongo~=2.3
