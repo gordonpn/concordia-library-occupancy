@@ -56,6 +56,7 @@ class DataCollector:
         return data
 
     def save(self, data):
+        # todo save into lowercase collection
         logger.debug("Making connection to mongodb")
         dbname: str = os.getenv('MONGO_INITDB_DATABASE')
         username: str = os.getenv('MONGO_NON_ROOT_USERNAME')

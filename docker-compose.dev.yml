@@ -44,6 +44,7 @@ services:
       - MONGO_NON_ROOT_ROLE
       - MONGO_NON_ROOT_USERNAME
       - MONGO_NON_ROOT_PASSWORD
+    #    TODO backend is currently not in the same network as mongo-db
     networks:
       - web
     depends_on:

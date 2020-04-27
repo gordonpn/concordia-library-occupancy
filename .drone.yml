@@ -1,10 +1,22 @@
 ---
 kind: pipeline
 type: docker
-name: deploy staging
+name: deploy
 
 steps:
-  - name: deploy
+  - name: slack before
+    image: plugins/slack
+    settings:
+      channel: drone-ci
+      template: >
+        {{build.event}} on branch {{build.branch}} from repo {{repo.name}}
+
+        build #{{build.number}} started!
+
+        {{build.link}}
+      webhook:
+        from_secret: SLACK_WEBHOOK_URL
+  - name: deploy staging
     image: docker/compose:1.25.5
     environment:
       DOMAIN:
@@ -25,21 +37,22 @@ steps:
         from_secret: MONGO_NON_ROOT_USERNAME
       MONGO_NON_ROOT_PASSWORD:
         from_secret: MONGO_NON_ROOT_PASSWORD
+      COMPOSE_PROJECT_NAME: library
     volumes:
       - name: dockersock
         path: /var/run/docker.sock
     commands:
       - docker-compose -f /drone/src/docker-compose.dev.yml up --detach --build
-  - name: slack
+  - name: slack after
     image: plugins/slack
     settings:
       channel: drone-ci
       template: >
-        {{build.event}} on {{build.branch}}
+        {{repo.name}}:
         {{#success build.status}}
-          build {{build.number}} succeeded!
+        build #{{build.number}} succeeded!
         {{else}}
-          build {{build.number}} failed!
+        build #{{build.number}} failed!
         {{/success}}
       webhook:
         from_secret: SLACK_WEBHOOK_URL
