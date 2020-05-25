@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  library-mongodb:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE
+      - MONGO_NON_ROOT_ROLE
+      - MONGO_NON_ROOT_USERNAME
+      - MONGO_NON_ROOT_PASSWORD
+      - TZ=America/Montreal
+    volumes:
+      - ./.docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+  library-scraper:
+    build:
+      context: ./scraper
+      dockerfile: Dockerfile
+    environment:
+      - OPEN_DATA_USER
+      - OPEN_DATA_KEY
+      - MONGO_INITDB_ROOT_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD
+      - MONGO_INITDB_DATABASE
+      - MONGO_NON_ROOT_ROLE
+      - MONGO_NON_ROOT_USERNAME
+      - MONGO_NON_ROOT_PASSWORD
+      - TZ=America/Montreal
+    depends_on:
+      - library-mongodb
+    restart: unless-stopped
+
+

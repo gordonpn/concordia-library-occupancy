@@ -39,15 +39,15 @@ class DataCollector:
 
         recorded_time: datetime = datetime.datetime.utcnow()
 
-        data['Webster'] = {
+        data['webster'] = {
             "time": recorded_time,
             "occupancy": max(0, int(float(request_json.get('Webster').get('Occupancy'))))
         }
-        data['Vanier'] = {
+        data['vanier'] = {
             "time": recorded_time,
             "occupancy": max(0, int(float(request_json.get('Vanier').get('Occupancy'))))
         }
-        data['GreyNuns'] = {
+        data['greynuns'] = {
             "time": recorded_time,
             "occupancy": max(0, int(float(request_json.get('GreyNuns').get('Occupancy'))))
         }
@@ -56,7 +56,6 @@ class DataCollector:
         return data
 
     def save(self, data):
-        # todo save into lowercase collection
         logger.debug("Making connection to mongodb")
         dbname: str = os.getenv('MONGO_INITDB_DATABASE')
         username: str = os.getenv('MONGO_NON_ROOT_USERNAME')
@@ -73,6 +72,6 @@ class DataCollector:
             logger.debug(f"Into {db}")
 
 
-if __name__ == '__main__':
+def run():
     data_collector = DataCollector()
     data_collector.run()

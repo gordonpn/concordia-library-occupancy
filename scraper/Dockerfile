@@ -1,13 +1,21 @@
-FROM python:3.7-alpine
+FROM python:3.8-alpine
+
+RUN adduser \
+  --disabled-password \
+  --home /home/appuser \
+  --shell /bin/bash \
+  --system \
+  --uid 1000 \
+  appuser
 
 COPY requirements.txt /tmp/
 RUN pip install -r /tmp/requirements.txt
 
-RUN adduser -S -D appuser
+RUN chown appuser /home/appuser
+
 WORKDIR /home/appuser
 USER appuser
 
-COPY logging.ini .
-COPY data_scraper.py .
+COPY . .
 
-CMD [ "python", "./data_scraper.py" ]
+CMD ["python", "./main.py"]
